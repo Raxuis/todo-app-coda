@@ -1,11 +1,13 @@
-import {View, Text} from "react-native";
+import {ThemedView} from "@/components/ThemedView";
+import {ThemedText} from "@/components/ThemedText";
+import {useState} from "react";
 
 export default function Todo() {
     return (
-        <View>
-            <Text className="bg-red-500">
-                Test
-            </Text>
-        </View>
+        <ThemedView className="flex flex-col min-h-screen min-w-screen pt-20 px-8 text-black overflow-hidden">
+            <ThemedText type="title" className="font-bold">
+                Todo App
+            </ThemedText>
+        </ThemedView>
     );
 };
