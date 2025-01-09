@@ -47,7 +47,7 @@ export default function Todo() {
                 <ScrollView>
                     {
                         tasks.map((task: Task) => (
-                            <View key={task.id} className="flex flex-row items-center gap-2">
+                            <View key={task.id} className="flex flex-row items-center justify-between">
                                 <View>
                                     <Checkbox value={task.title}
                                               isChecked={task.completed}
@@ -58,7 +58,7 @@ export default function Todo() {
                                         </CheckboxIndicator>
                                     </Checkbox>
                                 </View>
-                                <ThemedText>{task.title}</ThemedText>
+                                <ThemedText className="w-3/4 mx-auto">{task.title}</ThemedText>
                                 <Button onPress={() => deleteTask(task.id)} variant="outline" className="border-0 p-0">
                                     <Icon as={ArchiveXIcon} className="text-red-500"/>
                                 </Button>
