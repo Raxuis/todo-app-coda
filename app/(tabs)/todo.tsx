@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {ScrollView, View} from "react-native";
 import {Checkbox, CheckboxIcon, CheckboxIndicator} from "@/components/ui/checkbox";
-import {Button, ButtonIcon} from "@/components/ui/button";
+import {Button} from "@/components/ui/button";
 import {ArchiveXIcon, CheckIcon} from "lucide-react-native";
 import {Icon} from "@/components/ui/icon";
 
@@ -34,6 +34,10 @@ export default function Todo() {
         ));
     }
 
+    const deleteTask = (id: string) => {
+        setTasks((prevTasks: Task[]) => prevTasks.filter((task) => task.id !== id))
+    }
+
     return (
         <View className="flex flex-col min-h-screen min-w-screen py-20 px-8 text-black overflow-hidden">
             <ThemedText type="title" className="font-bold">Todo App</ThemedText>
@@ -55,7 +59,7 @@ export default function Todo() {
                                     </Checkbox>
                                 </View>
                                 <ThemedText>{task.title}</ThemedText>
-                                <Button onPress={() => console.log(task.id)} variant="outline" className="border-0 p-0">
+                                <Button onPress={() => deleteTask(task.id)} variant="outline" className="border-0 p-0">
                                     <Icon as={ArchiveXIcon} className="text-red-500"/>
                                 </Button>
                             </View>
