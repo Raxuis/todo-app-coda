@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {ScrollView, View} from "react-native";
 import {Checkbox, CheckboxIcon, CheckboxIndicator} from "@/components/ui/checkbox";
-// import {Button, ButtonIcon} from "@/components/ui/button";
+import {Button, ButtonIcon} from "@/components/ui/button";
 import {ArchiveXIcon, CheckIcon} from "lucide-react-native";
 import {Icon} from "@/components/ui/icon";
 
@@ -55,7 +55,9 @@ export default function Todo() {
                                     </Checkbox>
                                 </View>
                                 <ThemedText>{task.title}</ThemedText>
-                                <Icon as={ArchiveXIcon} className="text-red-500"/>
+                                <Button onPress={() => console.log(task.id)} variant="outline" className="border-0 p-0">
+                                    <Icon as={ArchiveXIcon} className="text-red-500"/>
+                                </Button>
                             </View>
                         ))
                     }
