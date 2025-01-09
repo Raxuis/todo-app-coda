@@ -1,7 +1,7 @@
 import {ThemedText} from "@/components/ThemedText";
 import React, {useCallback, useEffect, useState} from "react";
 // import axios from "axios";
-import {RefreshControl, ScrollView, View} from "react-native";
+import {RefreshControl, ScrollView, Text, View} from "react-native";
 import {Checkbox, CheckboxIcon, CheckboxIndicator} from "@/components/ui/checkbox";
 import {Button, ButtonText} from "@/components/ui/button";
 import {ArchiveXIcon, CheckIcon} from "lucide-react-native";
@@ -96,24 +96,30 @@ export default function Todo() {
                 <ScrollView className="mb-40">
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
                     {
-                        tasks.map((task: Task) => (
-                            <View key={task.id} className="flex flex-row items-center justify-between px-8">
-                                <View>
-                                    <Checkbox value={task.title}
-                                              isChecked={task.completed}
-                                              onChange={() => onToggle(task.id)}
-                                    >
-                                        <CheckboxIndicator size="md">
-                                            <CheckboxIcon as={CheckIcon}/>
-                                        </CheckboxIndicator>
-                                    </Checkbox>
+                        tasks.length > 0 ?
+                            tasks.map((task: Task) => (
+                                <View key={task.id} className="flex flex-row items-center justify-between px-8">
+                                    <View>
+                                        <Checkbox value={task.title}
+                                                  isChecked={task.completed}
+                                                  onChange={() => onToggle(task.id)}
+                                        >
+                                            <CheckboxIndicator size="md">
+                                                <CheckboxIcon as={CheckIcon}/>
+                                            </CheckboxIndicator>
+                                        </Checkbox>
+                                    </View>
+                                    <ThemedText className="w-3/4 mx-auto">{task.title}</ThemedText>
+                                    <Button onPress={() => deleteTask(task.id)} variant="outline"
+                                            className="border-0 p-0">
+                                        <Icon as={ArchiveXIcon} className="text-red-500"/>
+                                    </Button>
                                 </View>
-                                <ThemedText className="w-3/4 mx-auto">{task.title}</ThemedText>
-                                <Button onPress={() => deleteTask(task.id)} variant="outline" className="border-0 p-0">
-                                    <Icon as={ArchiveXIcon} className="text-red-500"/>
-                                </Button>
-                            </View>
-                        ))
+                            )) : (
+                                <Text className="px-8 pt-2 text-slate-500">
+                                    Il n'existe pas de tâche, veuillez en créer une.
+                                </Text>
+                            )
                     }
                 </ScrollView>
             )}
