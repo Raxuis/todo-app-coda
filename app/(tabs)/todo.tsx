@@ -10,6 +10,7 @@ import {AsyncStorageService} from "@/services/AsyncStorageService";
 import AddTaskModal from "@/components/AddTaskModal";
 import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
+import {Spinner} from "@/components/ui/spinner"
 
 export type Task = {
     userId: string;
@@ -87,7 +88,10 @@ export default function Todo() {
                 </Button>
             </View>
             {isLoading ? (
-                <ThemedText className="px-8">Loading...</ThemedText>
+                <View className="inline-flex flex-row items-center px-8 gap-2">
+                    <Spinner/>
+                    <ThemedText>Loading...</ThemedText>
+                </View>
             ) : (
                 <ScrollView className="mb-40">
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
