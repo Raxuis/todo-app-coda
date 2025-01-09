@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {ScrollView, View} from "react-native";
 import {Checkbox, CheckboxIcon, CheckboxIndicator} from "@/components/ui/checkbox";
-import {Button} from "@/components/ui/button";
+import {Button, ButtonText} from "@/components/ui/button";
 import {ArchiveXIcon, CheckIcon} from "lucide-react-native";
 import {Icon} from "@/components/ui/icon";
 
@@ -39,15 +39,20 @@ export default function Todo() {
     }
 
     return (
-        <View className="flex flex-col min-h-screen min-w-screen py-20 px-8 text-black overflow-hidden">
+        <View className="flex flex-col min-h-screen min-w-screen pt-20 text-black overflow-hidden">
+            <View className="flex flex-row w-full justify-between py-2 px-8">
             <ThemedText type="title" className="font-bold">Todo App</ThemedText>
+                <Button variant="solid">
+                    <ButtonText>Ajouter tâche</ButtonText>
+                </Button>
+            </View>
             {isLoading ? (
                 <ThemedText>Loading...</ThemedText>
             ) : (
-                <ScrollView>
+                <ScrollView className="mb-40">
                     {
                         tasks.map((task: Task) => (
-                            <View key={task.id} className="flex flex-row items-center justify-between">
+                            <View key={task.id} className="flex flex-row items-center justify-between px-8">
                                 <View>
                                     <Checkbox value={task.title}
                                               isChecked={task.completed}
