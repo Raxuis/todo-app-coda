@@ -15,13 +15,17 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@expo/html-elements": "0.4.2",
     "@expo/vector-icons": "^14.0.2",
     "@gluestack-ui/button": "^1.0.8",
     "@gluestack-ui/checkbox": "^0.1.33",
     "@gluestack-ui/icon": "^0.1.25",
+    "@gluestack-ui/input": "^0.1.32",
+    "@gluestack-ui/modal": "^0.1.35",
     "@gluestack-ui/nativewind-utils": "^1.0.26",
     "@gluestack-ui/overlay": "^0.1.16",
     "@gluestack-ui/toast": "^1.0.8",
+    "@legendapp/motion": "^2.4.0",
     "@react-native-async-storage/async-storage": "^2.1.0",
     "@react-navigation/bottom-tabs": "^7.2.0",
     "@react-navigation/native": "^7.0.14",
@@ -46,13 +50,15 @@
     "react-native": "0.76.5",
     "react-native-css-interop": "^0.1.22",
     "react-native-gesture-handler": "~2.20.2",
+    "react-native-get-random-values": "^1.11.0",
     "react-native-reanimated": "~3.16.6",
     "react-native-safe-area-context": "5.1.0",
     "react-native-screens": "~4.4.0",
     "react-native-svg": "15.2.0",
     "react-native-web": "~0.19.13",
     "react-native-webview": "13.12.5",
-    "tailwindcss": "^3.4.17"
+    "tailwindcss": "^3.4.17",
+    "uuid": "^11.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

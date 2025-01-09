@@ -1,12 +1,15 @@
 import {ThemedText} from "@/components/ThemedText";
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 // import axios from "axios";
-import {ScrollView, View} from "react-native";
+import {RefreshControl, ScrollView, View} from "react-native";
 import {Checkbox, CheckboxIcon, CheckboxIndicator} from "@/components/ui/checkbox";
 import {Button, ButtonText} from "@/components/ui/button";
 import {ArchiveXIcon, CheckIcon} from "lucide-react-native";
 import {Icon} from "@/components/ui/icon";
 import {AsyncStorageService} from "@/services/AsyncStorageService";
+import AddTaskModal from "@/components/AddTaskModal";
+import 'react-native-get-random-values';
+import {v4 as uuidv4} from 'uuid';
 
 export type Task = {
     userId: string;
@@ -18,6 +21,18 @@ export type Task = {
 export default function Todo() {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [showModal, setShowModal] = useState<boolean>(false);
+
+    const [refreshing, setRefreshing] = React.useState(false);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 2000);
+    }, [setRefreshing]);
+
+
     useEffect(() => {
         const setTasksFromAsyncStorage = async () => {
             const asyncStorageTasks: Task[] = await AsyncStorageService.getAsyncStorageValue("tasks");
@@ -38,29 +53,36 @@ export default function Todo() {
 
     const onToggle = async (taskId: string) => {
         setTasks((prevTasks) => {
-            const updatedTasks = prevTasks.map((task) =>
-                task.id === taskId ? { ...task, completed: !task.completed } : task
+            return prevTasks.map((task) =>
+                task.id === taskId ? {...task, completed: !task.completed} : task
             );
-            AsyncStorageService.setAsyncStorage("tasks", updatedTasks);
-            return updatedTasks;
         });
     };
 
 
     const deleteTask = async (id: string) => {
         setTasks((prevTasks) => {
-            const updatedTasks = prevTasks.filter((task) => task.id !== id);
-            AsyncStorageService.setAsyncStorage("tasks", updatedTasks);
-            return updatedTasks;
+            return prevTasks.filter((task) => task.id !== id);
         });
     };
+
+    const addTask = (taskText: string) => {
+        const taskId: string = uuidv4();
+        const task: Task = {
+            userId: "0",
+            id: taskId,
+            completed: false,
+            title: taskText
+        }
+        return setTasks([...tasks, task]);
+    }
 
 
     return (
         <View className="flex flex-col min-h-screen min-w-screen pt-20 text-black overflow-hidden">
             <View className="flex flex-row w-full justify-between py-2 px-8">
                 <ThemedText type="title" className="font-bold">Todo App</ThemedText>
-                <Button variant="solid">
+                <Button variant="solid" onPress={() => setShowModal(true)}>
                     <ButtonText>Ajouter tâche</ButtonText>
                 </Button>
             </View>
@@ -68,6 +90,7 @@ export default function Todo() {
                 <ThemedText className="px-8">Loading...</ThemedText>
             ) : (
                 <ScrollView className="mb-40">
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
                     {
                         tasks.map((task: Task) => (
                             <View key={task.id} className="flex flex-row items-center justify-between px-8">
@@ -90,6 +113,7 @@ export default function Todo() {
                     }
                 </ScrollView>
             )}
+            <AddTaskModal setShowModal={setShowModal} showModal={showModal} addTask={addTask}/>
         </View>
     );
 };
