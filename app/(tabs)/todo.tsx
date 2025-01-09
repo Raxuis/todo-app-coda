@@ -3,6 +3,8 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {ScrollView, View} from "react-native";
 import {Checkbox, CheckboxIcon, CheckboxIndicator} from "@/components/ui/checkbox";
+import {Button, ButtonIcon} from "@/components/ui/button";
+import {ArchiveXIcon, CheckIcon} from "lucide-react-native";
 
 type Task = {
     userId: string;
@@ -46,12 +48,15 @@ export default function Todo() {
                                               isChecked={task.completed}
                                               onChange={() => onToggle(task.id)}
                                     >
-                                    <CheckboxIndicator size="md">
-                                            <CheckboxIcon/>
+                                        <CheckboxIndicator size="md">
+                                            <CheckboxIcon as={CheckIcon}/>
                                         </CheckboxIndicator>
                                     </Checkbox>
                                 </View>
                                 <ThemedText>{task.title}</ThemedText>
+                                <Button size="md" className="rounded-full p-3.5 bg-red-500">
+                                    <ButtonIcon as={ArchiveXIcon}/>
+                                </Button>
                             </View>
                         ))
                     }
