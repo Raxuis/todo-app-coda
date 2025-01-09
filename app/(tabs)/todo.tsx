@@ -36,15 +36,25 @@ export default function Todo() {
     //     return (): void => setTasks([]);
     // }, []);
 
-    const onToggle = (taskId: string) => {
-        setTasks((prevTasks: Task[]) => prevTasks.map((task) => task.id === taskId
-            ? {...task, completed: !task.completed} : task
-        ));
-    }
+    const onToggle = async (taskId: string) => {
+        setTasks((prevTasks) => {
+            const updatedTasks = prevTasks.map((task) =>
+                task.id === taskId ? { ...task, completed: !task.completed } : task
+            );
+            AsyncStorageService.setAsyncStorage("tasks", updatedTasks);
+            return updatedTasks;
+        });
+    };
 
-    const deleteTask = (id: string) => {
-        setTasks((prevTasks: Task[]) => prevTasks.filter((task) => task.id !== id))
-    }
+
+    const deleteTask = async (id: string) => {
+        setTasks((prevTasks) => {
+            const updatedTasks = prevTasks.filter((task) => task.id !== id);
+            AsyncStorageService.setAsyncStorage("tasks", updatedTasks);
+            return updatedTasks;
+        });
+    };
+
 
     return (
         <View className="flex flex-col min-h-screen min-w-screen pt-20 text-black overflow-hidden">
