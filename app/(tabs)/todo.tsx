@@ -1,8 +1,9 @@
-import {ThemedView} from "@/components/ThemedView";
 import {ThemedText} from "@/components/ThemedText";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {Animated, ScrollView} from "react-native";
+import {ScrollView, View} from "react-native";
+import {Checkbox, CheckboxGroup, CheckboxIcon, CheckboxIndicator} from "@/components/ui/checkbox";
+import {IconSymbol} from "@/components/ui/IconSymbol";
 
 type Task = {
     userId: string;
@@ -18,23 +19,35 @@ export default function Todo() {
         axios
             .get("https://jsonplaceholder.typicode.com/todos")
             .then((response) => {
-                setTasks((prevTasks) => [...prevTasks, ...response.data]);
+                setTasks((prevTasks: Task[]) => [...prevTasks, ...response.data]);
             })
             .catch((e) => console.error(e))
             .finally(() => setIsLoading(false));
+        return (): void => setTasks([]);
     }, []);
     return (
-        <ScrollView className="flex flex-col min-h-screen min-w-screen pt-20 px-8 text-black overflow-hidden">
+        <View className="flex flex-col min-h-screen min-w-screen py-20 px-8 text-black overflow-hidden">
             <ThemedText type="title" className="font-bold">Todo App</ThemedText>
             {isLoading ? (
                 <ThemedText>Loading...</ThemedText>
             ) : (
-                tasks.map((task:Task) => (
-                    <ThemedText key={task.id} className="mt-2">
-                        {task.title}
-                    </ThemedText>
-                ))
+                <ScrollView>
+                    {
+                        tasks.map((task: Task) => (
+                            <View key={task.id} className="flex flex-row items-center gap-2">
+                                <View>
+                                    <Checkbox value={task.title} isChecked={task.completed}>
+                                        <CheckboxIndicator size="md">
+                                            <CheckboxIcon size="md"/>
+                                        </CheckboxIndicator>
+                                    </Checkbox>
+                                </View>
+                                <ThemedText>{task.title}</ThemedText>
+                            </View>
+                        ))
+                    }
+                </ScrollView>
             )}
-        </ScrollView>
+        </View>
     );
 };
