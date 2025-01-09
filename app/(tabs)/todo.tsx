@@ -1,13 +1,14 @@
 import {ThemedText} from "@/components/ThemedText";
 import React, {useEffect, useState} from "react";
-import axios from "axios";
+// import axios from "axios";
 import {ScrollView, View} from "react-native";
 import {Checkbox, CheckboxIcon, CheckboxIndicator} from "@/components/ui/checkbox";
 import {Button, ButtonText} from "@/components/ui/button";
 import {ArchiveXIcon, CheckIcon} from "lucide-react-native";
 import {Icon} from "@/components/ui/icon";
+import {AsyncStorageService} from "@/services/AsyncStorageService";
 
-type Task = {
+export type Task = {
     userId: string;
     id: string;
     title: string;
@@ -18,15 +19,22 @@ export default function Todo() {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     useEffect(() => {
-        axios
-            .get("https://jsonplaceholder.typicode.com/todos")
-            .then((response) => {
-                setTasks((prevTasks: Task[]) => [...prevTasks, ...response.data]);
-            })
-            .catch((e) => console.error(e))
-            .finally(() => setIsLoading(false));
-        return (): void => setTasks([]);
+        const setTasksFromAsyncStorage = async () => {
+            const asyncStorageTasks: Task[] = await AsyncStorageService.getAsyncStorageValue("tasks");
+            setTasks(asyncStorageTasks);
+        }
+        setTasksFromAsyncStorage().finally(() => setIsLoading(false));
     }, []);
+    // useEffect(() => {
+    //     axios
+    //         .get("https://jsonplaceholder.typicode.com/todos")
+    //         .then(async (response) => {
+    //             setTasks((prevTasks: Task[]) => [...prevTasks, ...response.data]);
+    //         })
+    //         .catch((e) => console.error(e))
+    //         .finally(() => setIsLoading(false));
+    //     return (): void => setTasks([]);
+    // }, []);
 
     const onToggle = (taskId: string) => {
         setTasks((prevTasks: Task[]) => prevTasks.map((task) => task.id === taskId
@@ -41,13 +49,13 @@ export default function Todo() {
     return (
         <View className="flex flex-col min-h-screen min-w-screen pt-20 text-black overflow-hidden">
             <View className="flex flex-row w-full justify-between py-2 px-8">
-            <ThemedText type="title" className="font-bold">Todo App</ThemedText>
+                <ThemedText type="title" className="font-bold">Todo App</ThemedText>
                 <Button variant="solid">
                     <ButtonText>Ajouter tâche</ButtonText>
                 </Button>
             </View>
             {isLoading ? (
-                <ThemedText>Loading...</ThemedText>
+                <ThemedText className="px-8">Loading...</ThemedText>
             ) : (
                 <ScrollView className="mb-40">
                     {
