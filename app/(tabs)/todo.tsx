@@ -11,6 +11,7 @@ import AddTaskModal from "@/components/AddTaskModal";
 import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
 import {Spinner} from "@/components/ui/spinner"
+import DeleteTaskModal from "@/components/DeleteTaskModal";
 
 export type Task = {
     userId: string;
@@ -23,6 +24,9 @@ export default function Todo() {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [showModal, setShowModal] = useState<boolean>(false);
+    const [showModal2, setShowModal2] = useState(false)
+    const [taskIdToDelete, setTaskIdToDelete] = useState<string | null>(null);
+
 
     const [refreshing, setRefreshing] = React.useState(false);
 
@@ -110,7 +114,12 @@ export default function Todo() {
                                         </Checkbox>
                                     </View>
                                     <ThemedText className="w-3/4 mx-auto">{task.title}</ThemedText>
-                                    <Button onPress={() => deleteTask(task.id)} variant="outline"
+                                    <Button onPress={
+                                        () => {
+                                            setTaskIdToDelete(task.id);
+                                            setShowModal2(true)
+                                        }
+                                    } variant="outline"
                                             className="border-0 p-0">
                                         <Icon as={ArchiveXIcon} className="text-red-500"/>
                                     </Button>
@@ -121,9 +130,17 @@ export default function Todo() {
                                 </Text>
                             )
                     }
+                    <AddTaskModal setShowModal={setShowModal} showModal={showModal} addTask={addTask}/>
+
+                    <DeleteTaskModal
+                        showModal={showModal2}
+                        setShowModal={setShowModal2}
+                        deleteTask={deleteTask}
+                        taskId={taskIdToDelete}
+                    />
                 </ScrollView>
             )}
-            <AddTaskModal setShowModal={setShowModal} showModal={showModal} addTask={addTask}/>
+
         </View>
     );
 };
