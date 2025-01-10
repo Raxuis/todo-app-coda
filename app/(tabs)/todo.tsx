@@ -75,7 +75,7 @@ export default function Todo() {
             completed: false,
             title: taskText
         }
-        return setTasks([...tasks, task]);
+        return setTasks([task, ...tasks]);
     }
 
 
