@@ -11,6 +11,7 @@ import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
 import {Spinner} from "@/components/ui/spinner"
 import DeleteTaskModal from "@/components/DeleteTaskModal";
+import {cn} from "@/lib/utils";
 
 export type Task = {
     userId: string;
@@ -102,7 +103,7 @@ export default function Todo() {
                                             </CheckboxIndicator>
                                         </Checkbox>
                                     </View>
-                                    <ThemedText className="w-3/4 mx-auto">{task.title}</ThemedText>
+                                    <ThemedText className={cn("w-3/4 mx-auto", task.completed && "line-through")}>{task.title}</ThemedText>
                                     <Button onPress={
                                         () => {
                                             setTaskIdToDelete(task.id);
