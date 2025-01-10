@@ -30,20 +30,23 @@ export default function Todo() {
 
     const [refreshing, setRefreshing] = useState(false);
 
-    const onRefresh = useCallback(() => {
+    const fetchTasks = async () => {
+        const asyncStorageTasks: Task[] = await AsyncStorageService.getAsyncStorageValue("tasks");
+        setTasks(asyncStorageTasks || []);
+    };
+
+    const onRefresh = useCallback(async () => {
         setRefreshing(true);
-        setTimeout(() => {
-            setRefreshing(false);
-        }, 2000);
+        await fetchTasks();
+        setRefreshing(false);
     }, [setRefreshing]);
 
 
     useEffect(() => {
-        const setTasksFromAsyncStorage = async () => {
-            const asyncStorageTasks: Task[] = await AsyncStorageService.getAsyncStorageValue("tasks");
-            setTasks(asyncStorageTasks || []);
+        const initializeTasks = async () => {
+            await fetchTasks();
         };
-        setTasksFromAsyncStorage().finally(() => setIsLoading(false));
+        initializeTasks().catch(console.error).finally(() => setIsLoading(false));
     }, []);
 
     useEffect(() => {
@@ -51,7 +54,7 @@ export default function Todo() {
             setIsLoading(true);
             await AsyncStorageService.setAsyncStorage("tasks", tasks);
         };
-        saveTasksToAsyncStorage().finally(() => setIsLoading(false));
+        saveTasksToAsyncStorage().catch(console.error).finally(() => setIsLoading(false));
     }, [tasks]);
 
     const onToggle = (taskId: string) => {
