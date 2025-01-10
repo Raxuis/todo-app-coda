@@ -103,7 +103,10 @@ export default function Todo() {
                                             </CheckboxIndicator>
                                         </Checkbox>
                                     </View>
-                                    <ThemedText className={cn("w-3/4 mx-auto", task.completed && "line-through")}>{task.title}</ThemedText>
+                                    <ThemedText
+                                        className={cn("w-3/4 mx-auto", task.completed && "line-through")}
+                                        onPress={() => onToggle(task.id)}
+                                    >{task.title}</ThemedText>
                                     <Button onPress={
                                         () => {
                                             setTaskIdToDelete(task.id);
