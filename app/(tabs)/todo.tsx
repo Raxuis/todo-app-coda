@@ -1,6 +1,5 @@
 import {ThemedText} from "@/components/ThemedText";
 import React, {useCallback, useEffect, useState} from "react";
-// import axios from "axios";
 import {RefreshControl, ScrollView, Text, View} from "react-native";
 import {Checkbox, CheckboxIcon, CheckboxIndicator} from "@/components/ui/checkbox";
 import {Button, ButtonText} from "@/components/ui/button";
@@ -24,7 +23,7 @@ export default function Todo() {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [showModal, setShowModal] = useState<boolean>(false);
-    const [showModal2, setShowModal2] = useState(false)
+    const [showModal2, setShowModal2] = useState<boolean>(false)
     const [taskIdToDelete, setTaskIdToDelete] = useState<string | null>(null);
 
 
@@ -45,16 +44,6 @@ export default function Todo() {
         }
         setTasksFromAsyncStorage().finally(() => setIsLoading(false));
     }, []);
-    // useEffect(() => {
-    //     axios
-    //         .get("https://jsonplaceholder.typicode.com/todos")
-    //         .then(async (response) => {
-    //             setTasks((prevTasks: Task[]) => [...prevTasks, ...response.data]);
-    //         })
-    //         .catch((e) => console.error(e))
-    //         .finally(() => setIsLoading(false));
-    //     return (): void => setTasks([]);
-    // }, []);
 
     const onToggle = async (taskId: string) => {
         setTasks((prevTasks) => {

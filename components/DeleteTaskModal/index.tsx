@@ -28,9 +28,6 @@ const DeleteTaskModal = (
     }) => {
     return (
         <>
-            <Button onPress={() => setShowModal(true)}>
-                <ButtonText>Delete Post</ButtonText>
-            </Button>
             <Modal
                 isOpen={showModal}
                 onClose={() => {
