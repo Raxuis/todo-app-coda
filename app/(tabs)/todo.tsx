@@ -57,7 +57,7 @@ export default function Todo() {
         saveTasksToAsyncStorage().catch(console.error).finally(() => setIsLoading(false));
     }, [tasks]);
 
-    const onToggle = (taskId: string) => {
+    const toggleCompleted = (taskId: string) => {
         setTasks((prevTasks: Task[]) => {
             return prevTasks.map((task) =>
                 task.id === taskId ? {...task, completed: !task.completed} : task
@@ -108,7 +108,7 @@ export default function Todo() {
                                     <View>
                                         <Checkbox value={task.title}
                                                   isChecked={task.completed}
-                                                  onChange={() => onToggle(task.id)}
+                                                  onChange={() => toggleCompleted(task.id)}
                                         >
                                             <CheckboxIndicator size="md">
                                                 <CheckboxIcon as={CheckIcon}/>
@@ -117,7 +117,7 @@ export default function Todo() {
                                     </View>
                                     <ThemedText
                                         className={cn("w-3/4 mx-auto", task.completed && "line-through")}
-                                        onPress={() => onToggle(task.id)}
+                                        onPress={() => toggleCompleted(task.id)}
                                     >{task.title}</ThemedText>
                                     <Button onPress={
                                         () => {
