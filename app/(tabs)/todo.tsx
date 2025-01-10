@@ -28,7 +28,7 @@ export default function Todo() {
     const [taskIdToDelete, setTaskIdToDelete] = useState<string | null>(null);
 
 
-    const [refreshing, setRefreshing] = React.useState(false);
+    const [refreshing, setRefreshing] = useState(false);
 
     const onRefresh = useCallback(() => {
         setRefreshing(true);
@@ -41,13 +41,21 @@ export default function Todo() {
     useEffect(() => {
         const setTasksFromAsyncStorage = async () => {
             const asyncStorageTasks: Task[] = await AsyncStorageService.getAsyncStorageValue("tasks");
-            setTasks(asyncStorageTasks);
-        }
+            setTasks(asyncStorageTasks || []);
+        };
         setTasksFromAsyncStorage().finally(() => setIsLoading(false));
     }, []);
 
-    const onToggle = async (taskId: string) => {
-        setTasks((prevTasks) => {
+    useEffect(() => {
+        const saveTasksToAsyncStorage = async () => {
+            setIsLoading(true);
+            await AsyncStorageService.setAsyncStorage("tasks", tasks);
+        };
+        saveTasksToAsyncStorage().finally(() => setIsLoading(false));
+    }, [tasks]);
+
+    const onToggle = (taskId: string) => {
+        setTasks((prevTasks: Task[]) => {
             return prevTasks.map((task) =>
                 task.id === taskId ? {...task, completed: !task.completed} : task
             );
@@ -70,6 +78,7 @@ export default function Todo() {
             title: taskText
         }
         return setTasks([task, ...tasks]);
+
     }
 
 
