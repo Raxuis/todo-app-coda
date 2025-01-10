@@ -59,15 +59,18 @@ const AddTaskModal = ({showModal, setShowModal, addTask}: {
                             setNewTask("");
                         }}
                     >
-                        <ButtonText className="text-red-500">Cancel</ButtonText>
+                        <ButtonText>Annuler</ButtonText>
                     </Button>
                     <Button
-                        onPress={() => {
-                            addTask(newTask);
+                        onPress={async () => {
+                            if (!newTask || newTask === "") {
+                                return;
+                            }
+                            await addTask(newTask);
                             setNewTask("");
                             setShowModal(false)
                         }}
-                        className="bg-green-500"
+                        action="positive"
                     >
                         <ButtonText>Ajouter</ButtonText>
                     </Button>

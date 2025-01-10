@@ -59,7 +59,7 @@ const DeleteTaskModal = (
                             }}
                             className="flex-grow"
                         >
-                            <ButtonText>Cancel</ButtonText>
+                            <ButtonText>Annuler</ButtonText>
                         </Button>
                         <Button
                             onPress={async () => {
@@ -69,9 +69,10 @@ const DeleteTaskModal = (
                                 }
                             }}
                             size="sm"
-                            className="flex-grow bg-red-500"
+                            className="flex-grow"
+                            action="negative"
                         >
-                            <ButtonText>Delete</ButtonText>
+                            <ButtonText>Supprimer</ButtonText>
                         </Button>
                     </ModalFooter>
                 </ModalContent>
